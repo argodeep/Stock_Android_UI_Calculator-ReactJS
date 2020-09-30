@@ -11,6 +11,7 @@ export default function App() {
   const mobileScroll = React.createRef();
 
   function handleInput(value) {
+    let displayTextBackup = displayText;
     if (isResultVisible) {
       if (
         value === "×" ||
@@ -19,13 +20,16 @@ export default function App() {
         value === "-" ||
         value === "."
       ) {
+        displayTextBackup = resultText;
         setDisplayText(() => `${resultText}`);
       } else {
+        displayTextBackup = "";
         setDisplayText(() => "");
       }
       setResult(false);
       setResultText("");
     }
+    // console.log(resultText, displayText, isDecimalAllowed)
     if (
       value === "×" ||
       value === "÷" ||
@@ -33,13 +37,13 @@ export default function App() {
       value === "-" ||
       value === "."
     ) {
-      if (displayText.slice(-1) !== value) {
+      if (displayTextBackup.slice(-1) !== value) {
         switch (value) {
           case ".":
             if (
-              displayText.length > 0 &&
-              !isNaN(displayText.slice(-1)) &&
-              // displayText.split(".").splice(-1)[0] !== "" &&
+              displayTextBackup.length > 0 &&
+              !isNaN(displayTextBackup.slice(-1)) &&
+              // displayTextBackup.split(".").splice(-1)[0] !== "" &&
               isDecimalAllowed
             ) {
               setDisplayText((text) => text + value);
@@ -48,28 +52,29 @@ export default function App() {
             break;
           case "-":
             if (
-              displayText.slice(-1) === "÷" ||
-              displayText.slice(-1) === "×"
+              displayTextBackup.slice(-1) === "÷" ||
+              displayTextBackup.slice(-1) === "×"
             ) {
               setDisplayText((text) => text + value);
               setDecimalAllow(true);
-            } else if (displayText.slice(-1) === "+") {
+            } else if (displayTextBackup.slice(-1) === "+") {
               setDisplayText((text) => text.slice(0, -1) + value);
               setDecimalAllow(true);
             } else if (
-              displayText.length === 0 ||
-              !isNaN(displayText.slice(-1))
+              displayTextBackup.length === 0 ||
+              !isNaN(displayTextBackup.slice(-1))
             ) {
               setDisplayText((text) => text + value);
               setDecimalAllow(true);
             }
             break;
           default:
-            if (displayText.length > 0) {
-              if (isNaN(displayText.slice(-1))) {
+            if (displayTextBackup.length > 0) {
+              if (isNaN(displayTextBackup.slice(-1))) {
                 if (
-                  displayText.slice(-1) !== "-" ||
-                  (displayText.length > 1 && displayText.slice(-1) === "-")
+                  displayTextBackup.slice(-1) !== "-" ||
+                  (displayTextBackup.length > 1 &&
+                    displayTextBackup.slice(-1) === "-")
                 ) {
                   setDisplayText((text) => text.slice(0, -1) + value);
                 }
@@ -89,16 +94,21 @@ export default function App() {
   function clear() {
     if (displayText.length > 0) {
       if (!isResultVisible) {
+        if (displayText.slice(0, -1).includes(".")) {
+          setDecimalAllow(false);
+        } else {
+          setDecimalAllow(true);
+        }
         setDisplayText((text) => text.slice(0, -1));
       } else {
         setResult(false);
         setDisplayText(() => resultText);
+        if (resultText.includes(".")) {
+          setDecimalAllow(false);
+        } else {
+          setDecimalAllow(true);
+        }
         setResultText("");
-      }
-      if (displayText.includes(".")) {
-        setDecimalAllow(false);
-      } else {
-        setDecimalAllow(true);
       }
     }
   }
@@ -118,9 +128,12 @@ export default function App() {
         result = result.replace(/([+])(?!.*\1)/g, "");
       }
       result = evaluate(result.replace(/([×])/g, "*").replace(/([÷])/g, "/"));
-      setResultText(result.toFixed(result.toString().includes(".") ? 2 : 0));
+      const resultString = result.toFixed(
+        result.toString().includes(".") ? 2 : 0
+      );
+      setResultText(() => resultString);
       setResult(true);
-      if (displayText.includes(".")) {
+      if (resultString.includes(".")) {
         setDecimalAllow(false);
       } else {
         setDecimalAllow(true);
