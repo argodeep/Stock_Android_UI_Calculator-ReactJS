@@ -1,2 +1,4 @@
 # ReactJS-Calculator
-Created with CodeSandbox
+
+- Basic calculator function. *Implemented*
+- Scientific calculator function. *Functionality Pending*
