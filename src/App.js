@@ -123,9 +123,9 @@ export default function App() {
   }
 
   function setOrientation(
-    orientation = (screen.orientation || {}).type ||
-      screen.mozOrientation ||
-      screen.msOrientation
+    orientation = (window.screen.orientation || {}).type ||
+      window.screen.mozOrientation ||
+      window.screen.msOrientation
   ) {
     if (
       orientation === "landscape-primary" ||
@@ -153,102 +153,87 @@ export default function App() {
       <div className="container">
         <p className="display-field">{displayText}</p>
         {isResultVisible && <p className="answer-field">{resultText}</p>}
-          {isLandscape && (
-            <div className="landscape-button-layout">
-              <button className="action-button">sin</button>
-              <button className="action-button">cos</button>
-              <button className="action-button">tan</button>
-              <button className="action-button">log</button>
-              <button className="action-button">in</button>
-              <button className="action-button">(</button>
-              <button className="action-button">)</button>
-              <button className="action-button">^</button>
-              <button className="action-button">√</button>
-              <button className="action-button">!</button>
-              <button className="action-button">π</button>
-              <button className="action-button">e</button>
-              <button className="action-button">INV</button>
-              <button className="action-button">
-                <span>RAD</span>
-              </button>
-              <button className="action-button">
-                <span>DEG</span>
-              </button>
-            </div>
-          )}
-          <div className="button-layout">
-            <div className="input-button-layout">
-              <button className="action-button" onClick={() => handleInput(7)}>
-                7
-              </button>
-              <button className="action-button" onClick={() => handleInput(8)}>
-                8
-              </button>
-              <button className="action-button" onClick={() => handleInput(9)}>
-                9
-              </button>
-
-              <button className="action-button" onClick={() => handleInput(4)}>
-                4
-              </button>
-              <button className="action-button" onClick={() => handleInput(5)}>
-                5
-              </button>
-              <button className="action-button" onClick={() => handleInput(6)}>
-                6
-              </button>
-              <button className="action-button" onClick={() => handleInput(1)}>
-                1
-              </button>
-              <button className="action-button" onClick={() => handleInput(2)}>
-                2
-              </button>
-              <button className="action-button" onClick={() => handleInput(3)}>
-                3
-              </button>
-              <button className="action-button" onClick={() => handleInput(0)}>
-                0
-              </button>
-              <button
-                className="action-button"
-                onClick={() => handleInput(".")}
-              >
-                .
-              </button>
-              <button className="action-button" onClick={() => operate()}>
-                =
-              </button>
-            </div>
-            <div className="operation-button-layout">
-              <button className="action-button" onClick={() => clear()}>
-                CE
-              </button>
-              <button
-                className="action-button"
-                onClick={() => handleInput("÷")}
-              >
-                ÷
-              </button>
-              <button
-                className="action-button"
-                onClick={() => handleInput("×")}
-              >
-                ×
-              </button>
-              <button
-                className="action-button"
-                onClick={() => handleInput("-")}
-              >
-                -
-              </button>
-              <button
-                className="action-button"
-                onClick={() => handleInput("+")}
-              >
-                +
-              </button>
-            </div>
+        {isLandscape && (
+          <div className="landscape-button-layout">
+            <button className="action-button">sin</button>
+            <button className="action-button">cos</button>
+            <button className="action-button">tan</button>
+            <button className="action-button">log</button>
+            <button className="action-button">in</button>
+            <button className="action-button">(</button>
+            <button className="action-button">)</button>
+            <button className="action-button">^</button>
+            <button className="action-button">√</button>
+            <button className="action-button">!</button>
+            <button className="action-button">π</button>
+            <button className="action-button">e</button>
+            <button className="action-button">INV</button>
+            <button className="action-button">
+              <span>RAD</span>
+            </button>
+            <button className="action-button">
+              <span>DEG</span>
+            </button>
           </div>
+        )}
+        <div className="button-layout">
+          <div className="input-button-layout">
+            <button className="action-button" onClick={() => handleInput(7)}>
+              7
+            </button>
+            <button className="action-button" onClick={() => handleInput(8)}>
+              8
+            </button>
+            <button className="action-button" onClick={() => handleInput(9)}>
+              9
+            </button>
+
+            <button className="action-button" onClick={() => handleInput(4)}>
+              4
+            </button>
+            <button className="action-button" onClick={() => handleInput(5)}>
+              5
+            </button>
+            <button className="action-button" onClick={() => handleInput(6)}>
+              6
+            </button>
+            <button className="action-button" onClick={() => handleInput(1)}>
+              1
+            </button>
+            <button className="action-button" onClick={() => handleInput(2)}>
+              2
+            </button>
+            <button className="action-button" onClick={() => handleInput(3)}>
+              3
+            </button>
+            <button className="action-button" onClick={() => handleInput(0)}>
+              0
+            </button>
+            <button className="action-button" onClick={() => handleInput(".")}>
+              .
+            </button>
+            <button className="action-button" onClick={() => operate()}>
+              =
+            </button>
+          </div>
+          <div className="operation-button-layout">
+            <button className="action-button" onClick={() => clear()}>
+              CE
+            </button>
+            <button className="action-button" onClick={() => handleInput("÷")}>
+              ÷
+            </button>
+            <button className="action-button" onClick={() => handleInput("×")}>
+              ×
+            </button>
+            <button className="action-button" onClick={() => handleInput("-")}>
+              -
+            </button>
+            <button className="action-button" onClick={() => handleInput("+")}>
+              +
+            </button>
+          </div>
+        </div>
         <div ref={mobileScroll}></div>
       </div>
     </div>
