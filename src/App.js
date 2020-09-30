@@ -36,11 +36,6 @@ export default function App() {
       if (displayText.slice(-1) !== value) {
         switch (value) {
           case ".":
-            console.log(
-              displayText.length > 0,
-              !isNaN(displayText.slice(-1)),
-              isDecimalAllowed
-            );
             if (
               displayText.length > 0 &&
               !isNaN(displayText.slice(-1)) &&
@@ -92,12 +87,19 @@ export default function App() {
   }
 
   function clear() {
-    if (displayText.length > 0 && !isResultVisible) {
-      setDisplayText(displayText.slice(0, -1));
-    } else {
-      setResult(false);
-      setDisplayText(resultText);
-      setResultText("");
+    if (displayText.length > 0) {
+      if (!isResultVisible) {
+        setDisplayText((text) => text.slice(0, -1));
+      } else {
+        setResult(false);
+        setDisplayText(() => resultText);
+        setResultText("");
+      }
+      if (displayText.includes(".")) {
+        setDecimalAllow(false);
+      } else {
+        setDecimalAllow(true);
+      }
     }
   }
 
@@ -105,20 +107,24 @@ export default function App() {
     if (displayText.length > 0) {
       let result = displayText;
       if (displayText.slice(-1).includes("×")) {
-        result = result.replace(/([×])/g, "");
+        result = result.replace(/([×])(?!.*\1)/g, "");
       } else if (displayText.slice(-1).includes("÷")) {
-        result = result.replace(/([÷])/g, "");
+        result = result.replace(/([÷])(?!.*\1)/g, "");
       } else if (displayText.slice(-1).includes("-")) {
-        result = result.replace(/([-])/g, "");
-        result = result.replace(/([÷])/g, "");
-        result = result.replace(/([×])/g, "");
+        result = result.replace(/([-])(?!.*\1)/g, "");
+        result = result.replace(/([÷])(?!.*\1)/g, "");
+        result = result.replace(/([×])(?!.*\1)/g, "");
       } else if (displayText.slice(-1).includes("+")) {
-        result = result.replace(/([+])/g, "");
+        result = result.replace(/([+])(?!.*\1)/g, "");
       }
       result = evaluate(result.replace(/([×])/g, "*").replace(/([÷])/g, "/"));
       setResultText(result.toFixed(result.toString().includes(".") ? 2 : 0));
       setResult(true);
-      setDecimalAllow(true);
+      if (displayText.includes(".")) {
+        setDecimalAllow(false);
+      } else {
+        setDecimalAllow(true);
+      }
     }
   }
 
