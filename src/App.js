@@ -25,6 +25,7 @@ export default function App() {
       } else {
         displayTextBackup = "";
         setDisplayText(() => "");
+        setDecimalAllow(true);
       }
       setResult(false);
       setResultText("");
